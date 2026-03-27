@@ -65,7 +65,9 @@ router.post('/', upload.fields([
     cleanupFile(targetImageFile.path);
     cleanupFile(overlayVideoFile.path);
 
-    const slug = `${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${Math.random().toString(36).substr(2, 4)}`;
+    const latinPart = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 24);
+    const randomPart = Math.random().toString(36).substr(2, 6);
+    const slug = latinPart ? `${latinPart}-${randomPart}` : `ar-${randomPart}`;
 
     const project = await prisma.project.create({
       data: {
